@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { addDevelopers } from "../features/developerSlice";
 import Select from "react-select";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Register() {
   const {
@@ -16,6 +17,8 @@ export default function Register() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { theme } = useTheme();;
 
   const skillsOptions = [
     { value: "React", label: "React" },
@@ -74,7 +77,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-10 sm:py-20 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-2  bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 px-6 py-8 rounded-xl shadow-lg">
         <h2 className="text-3xl font-bold text-center mb-6 text-blue-600 dark:text-blue-400">
           Developer Registration
@@ -82,29 +85,56 @@ export default function Register() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Email */}
-          <InputField label="Email" type="email" register={register} name="email" error={errors.email} required />
+          <InputField
+            label="Email"
+            type="email"
+            register={register}
+            name="email"
+            error={errors.email}
+            required
+          />
 
           {/* Password */}
-          <InputField label="Password" type="password" register={register} name="password" error={errors.password} required minLength={6} />
+          <InputField
+            label="Password"
+            type="password"
+            register={register}
+            name="password"
+            error={errors.password}
+            required
+            minLength={6}
+          />
 
           {/* Name */}
-          <InputField label="Name" register={register} name="name" error={errors.name} required />
+          <InputField
+            label="Name"
+            register={register}
+            name="name"
+            error={errors.name}
+            required
+          />
 
           {/* Bio */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Bio
+            </label>
             <textarea
               {...register("bio", { required: true })}
               placeholder="Tell us about yourself..."
               rows={3}
               className="w-full px-4 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none"
             />
-            {errors.bio && <p className="text-red-500 text-sm mt-1">Bio is required</p>}
+            {errors.bio && (
+              <p className="text-red-500 text-sm mt-1">Bio is required</p>
+            )}
           </div>
 
           {/* Skills */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Skills</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Skills
+            </label>
             <Controller
               name="skills"
               control={control}
@@ -114,33 +144,71 @@ export default function Register() {
                   {...field}
                   isMulti
                   options={skillsOptions}
-                  className="text-sm"
                   classNamePrefix="react-select"
-                  theme={(theme) => ({
-                    ...theme,
+                  theme={(baseTheme) => ({
+                    ...baseTheme,
                     colors: {
-                      ...theme.colors,
-                      primary25: "#cbd5e1",
+                      ...baseTheme.colors,
+                      primary25: theme === "dark" ? "#334155" : "#cbd5e1",
                       primary: "#2563eb",
-                      neutral0: "#fff",
-                      neutral80: "#1f2937",
+                      neutral0: theme === "dark" ? "#1f2937" : "#fff",
+                      neutral80: theme === "dark" ? "#f1f5f9" : "#1f2937",
+                      neutral20: theme === "dark" ? "#475569" : "#d1d5db",
                     },
                   })}
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      backgroundColor: theme === "dark" ? "#1f2937" : "#fff",
+                      color: theme === "dark" ? "#f1f5f9" : "#1f2937",
+                      borderColor: theme === "dark" ? "#475569" : "#d1d5db",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      backgroundColor: theme === "dark" ? "#1f2937" : "#fff",
+                    }),
+                    multiValue: (base) => ({
+                      ...base,
+                      backgroundColor: theme === "dark" ? "#334155" : "#e2e8f0",
+                    }),
+                    multiValueLabel: (base) => ({
+                      ...base,
+                      color: theme === "dark" ? "#f1f5f9" : "#1f2937",
+                    }),
+                  }}
                 />
               )}
             />
+
             {errors.skills && (
-              <p className="text-red-500 text-sm mt-1">Please select at least one skill</p>
+              <p className="text-red-500 text-sm mt-1">
+                Please select at least one skill
+              </p>
             )}
           </div>
 
           {/* Avatar */}
-          <InputField label="Avatar URL (optional)" register={register} name="avatar" placeholder="https://..." />
+          <InputField
+            label="Avatar URL (optional)"
+            register={register}
+            name="avatar"
+            placeholder="https://..."
+          />
 
           {/* Social Links */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="GitHub" register={register} name="github" placeholder="https://github.com/username" />
-            <InputField label="LinkedIn" register={register} name="linkedin" placeholder="https://linkedin.com/in/username" />
+            <InputField
+              label="GitHub"
+              register={register}
+              name="github"
+              placeholder="https://github.com/username"
+            />
+            <InputField
+              label="LinkedIn"
+              register={register}
+              name="linkedin"
+              placeholder="https://linkedin.com/in/username"
+            />
           </div>
 
           {/* Submit */}
@@ -157,17 +225,30 @@ export default function Register() {
 }
 
 // 📦 Reusable input component
-function InputField({ label, register, name, type = "text", error, required, minLength, placeholder = "" }) {
+function InputField({
+  label,
+  register,
+  name,
+  type = "text",
+  error,
+  required,
+  minLength,
+  placeholder = "",
+}) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        {label}
+      </label>
       <input
         {...register(name, { required, minLength })}
         type={type}
         placeholder={placeholder || `Enter your ${label.toLowerCase()}`}
         className="w-full px-4 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
       />
-      {error && <p className="text-red-500 text-sm mt-1">{label} is required</p>}
+      {error && (
+        <p className="text-red-500 text-sm mt-1">{label} is required</p>
+      )}
     </div>
   );
 }

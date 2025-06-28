@@ -21,7 +21,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-10 sm:py-20 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-2 bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 px-6 py-8 rounded-xl shadow-lg">
         <h2 className="text-3xl font-bold text-center mb-6 text-blue-600 dark:text-blue-400">
           Welcome Back to DevHub
