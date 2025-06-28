@@ -58,7 +58,7 @@ export default function Register() {
           name: data.name,
           bio: data.bio,
           email: data.email,
-          avatar: data.avatar || `https://i.pravatar.cc/150?u=${user.uid}`,
+          avatar: data.avatar || "https://www.gravatar.com/avatar/?d=mp&f=y",
           skills: data.skills.map((s) => s.value),
           social: {
             github: data.github,
