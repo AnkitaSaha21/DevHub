@@ -44,7 +44,7 @@ export default function DeveloperList() {
   ];
 
   return (
-    <div className=" bg-gray-50 dark:bg-gray-900 py-12 px-4">
+    <div className=" bg-white-50 dark:bg-gray-900 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-center text-blue-600 dark:text-blue-400 mb-8">
           Developer Directory
