@@ -1,0 +1,17 @@
+/* src/index.css */
+@import "tailwindcss"; /* This single import is enough for v4 */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+body {
+  font-family: theme("fontFamily.sans");
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.react-select__menu {
+  z-index: 50;
+}
